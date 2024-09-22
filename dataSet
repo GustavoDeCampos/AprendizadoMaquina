@@ -1,0 +1,7 @@
+# Carregar dataset Titanic
+df = pd.read_csv('/content/titanic.csv')
+
+# Pré-processamento dos dados
+df = df[['Survived', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex']]
+df['Sex'] = df['Sex'].apply(lambda x: 1 if x == 'male' else 0)
+df['Age'].fillna(df['Age'].mean(), inplace=True)
