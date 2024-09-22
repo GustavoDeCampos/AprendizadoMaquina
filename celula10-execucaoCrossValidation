@@ -1,0 +1,3 @@
+# Executar k-fold cross-validation
+nb = NaiveBayes()
+cross_validation(nb, X, y, k=5)
