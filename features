@@ -1,0 +1,3 @@
+# Dividir em features (X) e target (y)
+X = df.drop('Survived', axis=1).values
+y = df['Survived'].values
