@@ -1,0 +1,2 @@
+# Fazer previsões no conjunto de teste
+y_pred = nb.predict(X_test)
