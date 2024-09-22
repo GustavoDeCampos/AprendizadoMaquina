@@ -1,0 +1,3 @@
+# Instanciar e treinar o classificador Naive Bayes
+nb = NaiveBayes()
+nb.fit(X_train, y_train)
