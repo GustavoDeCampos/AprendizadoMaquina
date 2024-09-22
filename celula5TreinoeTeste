@@ -1,0 +1,8 @@
+# Dividir o dataset em treino e teste manualmente
+n_samples = len(y)
+train_size = int(0.8 * n_samples)
+indices = np.random.permutation(n_samples)
+train_indices, test_indices = indices[:train_size], indices[train_size:]
+
+X_train, X_test = X[train_indices], X[test_indices]
+y_train, y_test = y[train_indices], y[test_indices]
