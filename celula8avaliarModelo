@@ -1,0 +1,64 @@
+# Avaliar o modelo com matriz de confusão e métricas
+def confusion_matrix(y_true, y_pred, labels=None):
+    if labels is None:
+        labels = np.unique(y_true)
+
+    matrix = pd.DataFrame(np.zeros((len(labels), len(labels)), dtype=int), index=labels, columns=labels)
+
+    for true_label, predicted_label in zip(y_true, y_pred):
+        matrix.at[true_label, predicted_label] += 1
+    
+    return matrix
+
+def accuracy(conf_matrix) -> float:
+    total_correct = np.trace(conf_matrix)  
+    total_samples = conf_matrix.sum().sum()  
+    return total_correct / total_samples
+
+def precision(conf_matrix: pd.DataFrame) -> dict:
+    precisions = {}
+    for label in conf_matrix.columns:
+        true_positive = conf_matrix.at[label, label]  
+        predicted_positive = conf_matrix[label].sum()  
+        precisions[label] = true_positive / predicted_positive if predicted_positive > 0 else 0
+    return precisions
+
+def recall(conf_matrix: pd.DataFrame) -> dict:
+    recalls = {}
+    for label in conf_matrix.index:
+        true_positive = conf_matrix.at[label, label]  
+        actual_positive = conf_matrix.loc[label].sum()  
+        recalls[label] = true_positive / actual_positive if actual_positive > 0 else 0
+    return recalls
+
+def f1_score(conf_matrix: pd.DataFrame) -> dict:
+    precisions = precision(conf_matrix)
+    recalls = recall(conf_matrix)
+    f1_scores = {}
+
+    for label in conf_matrix.index:
+        p = precisions[label]
+        r = recalls[label]
+        if (p + r) > 0:
+            f1_scores[label] = 2 * (p * r) / (p + r)
+        else:
+            f1_scores[label] = 0
+
+    return f1_scores
+
+# Calcular a matriz de confusão
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+# Calcular métricas
+acc = accuracy(conf_matrix)
+precisions = precision(conf_matrix)
+recalls = recall(conf_matrix)
+f1_scores = f1_score(conf_matrix)
+
+# Exibir resultados
+print(f'Acurácia: {acc:.4f}')
+print('Precisão por classe:', precisions)
+print('Recall por classe:', recalls)
+print('F1 Score por classe:', f1_scores)
+print('Matriz de confusão:')
+print(conf_matrix)
